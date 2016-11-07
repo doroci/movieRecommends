@@ -1,4 +1,4 @@
-# movieRecommends
+# 스파크 영화추천시스템 데모
 
 1. 코드에서 movies.txt 경로 설정
 2. 코드에서 saveAsTextFile 경로 설정
