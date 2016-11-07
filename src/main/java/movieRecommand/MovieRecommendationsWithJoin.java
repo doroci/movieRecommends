@@ -21,7 +21,7 @@ public class MovieRecommendationsWithJoin {
     public static void main(String[] args) throws Exception {
 
         //STEP-1 : 데이터 파일
-        String usersRatingsInputFile = "/Users/lee/IdeaProjects/bigBio/src/main/java/utils/movies.txt";
+        String usersRatingsInputFile = "/경로설정/movies.txt";
         System.out.println("usersRatingsInputFile="+ usersRatingsInputFile);
 
         //STEP-2: SparkContext 생성
@@ -214,8 +214,8 @@ public class MovieRecommendationsWithJoin {
             System.out.println("debug5 key="+t2._1 + "\t value="+t2._2);
         }
 
-        //corr.saveAsTextFile("/movies/output");
-        corr.saveAsTextFile("/tmp/MovieRecommendationsWithJoin/");
+        //corr.saveAsTextFile("/tmp/MovieRecommendationsWithJoin/"");
+        corr.saveAsTextFile("/파일저장 경로설정/MovieRecommendationsWithJoin/");
         System.exit(0);
     }
 

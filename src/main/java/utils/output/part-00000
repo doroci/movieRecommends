@@ -1,0 +1,8 @@
+((Movie2,Movie3),Tuple3[NaN,0.9797958971132712,0.75])
+((Movie2,Movie3 ),Tuple3[NaN,1.0,0.25])
+((Movie3,Movie5),Tuple3[NaN,0.970142500145332,0.6666666666666666])
+((Movie1,Movie2),Tuple3[-0.492365963917331,0.8638091589670809,1.0])
+((Movie2,Movie5),Tuple3[1.0,1.0,0.5])
+((Movie1,Movie5),Tuple3[-1.0,0.7961621941231025,0.5])
+((Movie1,Movie4),Tuple3[NaN,1.0,0.25])
+((Movie2,Movie4),Tuple3[NaN,1.0,0.25])

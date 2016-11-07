@@ -1,0 +1,5 @@
+$SPARK_HOME/bin/spark-submit
+	--master local[*] 
+	--class movieRecommand.MovieRecommendations 
+	--executor-memory 2G
+	/tmp/output/movieRecommend-1.0-SNAPSHOT.jar
