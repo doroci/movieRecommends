@@ -1,0 +1,143 @@
+
+User1	Movie1	3
+User1	Movie2	4
+User1	Movie3	3
+User2	Movie1	2
+User2	Movie2	5
+User2	Movie3	3
+User2	Movie5	5
+User3	Movie1	2
+User3	Movie2	3
+User3	Movie3 	2
+User4	Movie1	5
+User4	Movie2	3
+User4	Movie3	3
+User4	Movie4	2
+User4	Movie5	3
+============================== (영화),(유저,랭킹)을 K,V 타입으로 만들어준다. ==============================
+============================== mapToPair() : (K,V) -> 함수 사용 ==============================
+====================================================================================================
+key=Movie1	 value=(User1,3)
+key=Movie2	 value=(User1,4)
+key=Movie3	 value=(User1,3)
+key=Movie1	 value=(User2,2)
+key=Movie2	 value=(User2,5)
+key=Movie3	 value=(User2,3)
+key=Movie5	 value=(User2,5)
+key=Movie1	 value=(User3,2)
+key=Movie2	 value=(User3,3)
+key=Movie3 	 value=(User3,2)
+key=Movie1	 value=(User4,5)
+key=Movie2	 value=(User4,3)
+key=Movie3	 value=(User4,3)
+key=Movie4	 value=(User4,2)
+key=Movie5	 value=(User4,3)
+============================== 영화를 기준으로 K,V타입으로 만들어준다. ==============================
+============================== groupByKey() 함수 사용 , 결과값은 reduceByKey와 동일 ==============================
+===== 위의 두 함수의 차이 : https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/best_practices/prefer_reducebykey_over_groupbykey.html =====
+====================================================================================================
+ key=Movie2	 value=[(User1,4), (User2,5), (User3,3), (User4,3)]
+ key=Movie4	 value=[(User4,2)]
+ key=Movie3  value=[(User3,2)]
+ key=Movie5	 value=[(User2,5), (User4,3)]
+ key=Movie3	 value=[(User1,3), (User2,3), (User4,3)]
+ key=Movie1	 value=[(User1,3), (User2,2), (User3,2), (User4,5)]
+============================== 영화 마다 numberOfRaters의 숫자를 합산하고 K,V타입으로 만들어준다.==============================
+============================== flatMapToPair() 함수 사용 ==============================
+====================================================================================================
+ key=User1	 value=Tuple3[Movie2,4,4]
+ key=User2	 value=Tuple3[Movie2,5,4]
+ key=User3	 value=Tuple3[Movie2,3,4]
+ key=User4	 value=Tuple3[Movie2,3,4]
+ key=User4	 value=Tuple3[Movie4,2,1]
+ key=User3	 value=Tuple3[Movie3 ,2,1]
+ key=User2	 value=Tuple3[Movie5,5,2]
+ key=User4	 value=Tuple3[Movie5,3,2]
+ key=User1	 value=Tuple3[Movie3,3,3]
+ key=User2	 value=Tuple3[Movie3,3,3]
+ key=User4	 value=Tuple3[Movie3,3,3]
+ key=User1	 value=Tuple3[Movie1,3,4]
+ key=User2	 value=Tuple3[Movie1,2,4]
+ key=User3	 value=Tuple3[Movie1,2,4]
+ key=User4	 value=Tuple3[Movie1,5,4]
+
+============================== 위의 K,V 값을 조인을한다. (셔플과 비슷) ==============================
+============================== join() 함수 사용 : SQL  ==============================
+====================================================================================================
+
+ key=User3	 value=(Tuple3[Movie2,3,4],Tuple3[Movie2,3,4])
+ key=User3	 value=(Tuple3[Movie2,3,4],Tuple3[Movie3 ,2,1])
+ key=User3	 value=(Tuple3[Movie2,3,4],Tuple3[Movie1,2,4])
+ key=User3	 value=(Tuple3[Movie3 ,2,1],Tuple3[Movie2,3,4])
+ key=User3	 value=(Tuple3[Movie3 ,2,1],Tuple3[Movie3 ,2,1])
+ key=User3	 value=(Tuple3[Movie3 ,2,1],Tuple3[Movie1,2,4])
+ key=User3	 value=(Tuple3[Movie1,2,4],Tuple3[Movie2,3,4])
+ key=User3	 value=(Tuple3[Movie1,2,4],Tuple3[Movie3 ,2,1])
+ key=User3	 value=(Tuple3[Movie1,2,4],Tuple3[Movie1,2,4])
+ key=User1	 value=(Tuple3[Movie2,4,4],Tuple3[Movie2,4,4])
+ key=User1	 value=(Tuple3[Movie2,4,4],Tuple3[Movie3,3,3])
+ key=User1	 value=(Tuple3[Movie2,4,4],Tuple3[Movie1,3,4])
+ key=User1	 value=(Tuple3[Movie3,3,3],Tuple3[Movie2,4,4])
+ key=User1	 value=(Tuple3[Movie3,3,3],Tuple3[Movie3,3,3])
+ key=User1	 value=(Tuple3[Movie3,3,3],Tuple3[Movie1,3,4])
+ key=User1	 value=(Tuple3[Movie1,3,4],Tuple3[Movie2,4,4])
+ key=User1	 value=(Tuple3[Movie1,3,4],Tuple3[Movie3,3,3])
+ key=User1	 value=(Tuple3[Movie1,3,4],Tuple3[Movie1,3,4])
+ key=User2	 value=(Tuple3[Movie2,5,4],Tuple3[Movie2,5,4])
+ key=User2	 value=(Tuple3[Movie2,5,4],Tuple3[Movie5,5,2])
+ key=User2	 value=(Tuple3[Movie2,5,4],Tuple3[Movie3,3,3])
+ key=User2	 value=(Tuple3[Movie2,5,4],Tuple3[Movie1,2,4])
+ key=User2	 value=(Tuple3[Movie5,5,2],Tuple3[Movie2,5,4])
+ key=User2	 value=(Tuple3[Movie5,5,2],Tuple3[Movie5,5,2])
+ key=User2	 value=(Tuple3[Movie5,5,2],Tuple3[Movie3,3,3])
+ key=User2	 value=(Tuple3[Movie5,5,2],Tuple3[Movie1,2,4])
+ key=User2	 value=(Tuple3[Movie3,3,3],Tuple3[Movie2,5,4])
+ key=User2	 value=(Tuple3[Movie3,3,3],Tuple3[Movie5,5,2])
+ key=User2	 value=(Tuple3[Movie3,3,3],Tuple3[Movie3,3,3])
+ key=User2	 value=(Tuple3[Movie3,3,3],Tuple3[Movie1,2,4])
+ key=User2	 value=(Tuple3[Movie1,2,4],Tuple3[Movie2,5,4])
+ key=User2	 value=(Tuple3[Movie1,2,4],Tuple3[Movie5,5,2])
+ key=User2	 value=(Tuple3[Movie1,2,4],Tuple3[Movie3,3,3])
+ key=User2	 value=(Tuple3[Movie1,2,4],Tuple3[Movie1,2,4])
+ key=User4	 value=(Tuple3[Movie2,3,4],Tuple3[Movie2,3,4])
+ key=User4	 value=(Tuple3[Movie2,3,4],Tuple3[Movie4,2,1])
+ key=User4	 value=(Tuple3[Movie2,3,4],Tuple3[Movie5,3,2])
+ key=User4	 value=(Tuple3[Movie2,3,4],Tuple3[Movie3,3,3])
+ key=User4	 value=(Tuple3[Movie2,3,4],Tuple3[Movie1,5,4])
+ key=User4	 value=(Tuple3[Movie4,2,1],Tuple3[Movie2,3,4])
+ key=User4	 value=(Tuple3[Movie4,2,1],Tuple3[Movie4,2,1])
+ key=User4	 value=(Tuple3[Movie4,2,1],Tuple3[Movie5,3,2])
+ key=User4	 value=(Tuple3[Movie4,2,1],Tuple3[Movie3,3,3])
+ key=User4	 value=(Tuple3[Movie4,2,1],Tuple3[Movie1,5,4])
+ key=User4	 value=(Tuple3[Movie5,3,2],Tuple3[Movie2,3,4])
+ key=User4	 value=(Tuple3[Movie5,3,2],Tuple3[Movie4,2,1])
+ key=User4	 value=(Tuple3[Movie5,3,2],Tuple3[Movie5,3,2])
+ key=User4	 value=(Tuple3[Movie5,3,2],Tuple3[Movie3,3,3])
+ key=User4	 value=(Tuple3[Movie5,3,2],Tuple3[Movie1,5,4])
+ key=User4	 value=(Tuple3[Movie3,3,3],Tuple3[Movie2,3,4])
+ key=User4	 value=(Tuple3[Movie3,3,3],Tuple3[Movie4,2,1])
+ key=User4	 value=(Tuple3[Movie3,3,3],Tuple3[Movie5,3,2])
+ key=User4	 value=(Tuple3[Movie3,3,3],Tuple3[Movie3,3,3])
+ key=User4	 value=(Tuple3[Movie3,3,3],Tuple3[Movie1,5,4])
+ key=User4	 value=(Tuple3[Movie1,5,4],Tuple3[Movie2,3,4])
+ key=User4	 value=(Tuple3[Movie1,5,4],Tuple3[Movie4,2,1])
+ key=User4	 value=(Tuple3[Movie1,5,4],Tuple3[Movie5,3,2])
+ key=User4	 value=(Tuple3[Movie1,5,4],Tuple3[Movie3,3,3])
+ key=User4	 value=(Tuple3[Movie1,5,4],Tuple3[Movie1,5,4])
+
+============================== 유저 기준으로 모든 영화와 numberOfRaters를 묶는다. ==============================
+============================== mapValues() 함수 사용 : 키의변경 없이 페어 RDD의 각 값에 함수를 적용한다. ==============================
+====================================================================================================
+((Movie2,Movie3),Tuple3[NaN,0.9797958971132712,0.75])
+((Movie2,Movie3 ),Tuple3[NaN,1.0,0.25])
+((Movie3,Movie5),Tuple3[NaN,0.970142500145332,0.6666666666666666])
+((Movie1,Movie2),Tuple3[-0.492365963917331,0.8638091589670809,1.0])
+((Movie2,Movie5),Tuple3[1.0,1.0,0.5])
+((Movie1,Movie5),Tuple3[-1.0,0.7961621941231025,0.5])
+((Movie1,Movie4),Tuple3[NaN,1.0,0.25])
+((Movie2,Movie4),Tuple3[NaN,1.0,0.25])
+((Movie1,Movie3),Tuple3[NaN,0.9365858115816941,0.75])
+((Movie1,Movie3 ),Tuple3[NaN,1.0,0.25])
+((Movie3,Movie4),Tuple3[NaN,1.0,0.3333333333333333])
+((Movie4,Movie5),Tuple3[NaN,1.0,0.5])
+

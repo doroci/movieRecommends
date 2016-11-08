@@ -20,4 +20,3 @@
 * 코사인
 
 * [관련 링크](http://www.slideshare.net/springloops/collaborative-filtering-23732558)
-

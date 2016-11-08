@@ -31,7 +31,7 @@ public class MovieRecommendationsWithJoin {
         //STEP-3: SparkContext로 부터 RDD생성
         JavaRDD<String> usersRatings = ctx.textFile(usersRatingsInputFile);
 
-        //STEP-4: 누가 moive를 봤는지 검색
+        //STEP-4: movie를 어떤 user가 관람했는지 확인
         // <K2,V2> JavaPairRDD<K2,V2> mapToPair(PairFunction<T,K2,V2> f)
         // 기존 RDD에 대한 원자값을 mapToPari함수를 통해 새로운 RDD를 반환한다.
         // PairFunction<T, K2, V2>
